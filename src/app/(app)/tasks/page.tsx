@@ -8,6 +8,9 @@ import { columns } from "./components/columns";
 import { DataTable } from "./components/data-table";
 import { UserNav } from "./components/user-nav";
 import { taskSchema } from "./data/schema";
+import { db } from "@/db";
+import { cards, inventory } from "@/db/schema";
+import { inArray, isNotNull, sql } from "drizzle-orm";
 
 export const metadata: Metadata = {
   title: "Tasks",
@@ -17,7 +20,7 @@ export const metadata: Metadata = {
 // Simulate a database read for tasks.
 async function getTasks() {
   const data = await fs.readFile(
-    path.join(process.cwd(), "src/app/tasks/data/tasks.json")
+    path.join(process.cwd(), "src/app/(app)/tasks/data/tasks.json")
   );
 
   const tasks = JSON.parse(data.toString());
@@ -27,6 +30,21 @@ async function getTasks() {
 
 export default async function TaskPage() {
   const tasks = await getTasks();
+
+  const data = await db.query.inventory.findMany({
+    where: isNotNull(inventory.cardId),
+  });
+
+  console.log(data);
+
+  const cardss = await db.query.cards.findMany({
+    where: inArray(
+      cards.id,
+      data.map((d) => d.cardId)
+    ),
+  });
+
+  console.log(cardss);
 
   return (
     <div className="container py-6">
