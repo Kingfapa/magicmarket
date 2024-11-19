@@ -8,6 +8,10 @@ import { ColumnDef } from "@tanstack/react-table";
 
 export const columns: ColumnDef<typeof inventory.$inferSelect>[] = [
   {
+    accessorKey: "cardId",
+    header: "cardId",
+  },
+  {
     accessorKey: "card.name",
     header: "Name",
   },

@@ -8,7 +8,6 @@ import {
   CardTitle,
   CardDescription,
   CardContent,
-  CardFooter,
 } from "@/components/ui/card";
 
 export const dynamic = "force-dynamic";
@@ -23,8 +22,18 @@ export default async function Home() {
 
   return (
     <div className="container mx-auto py-10 border min-h-screen">
-      <main>
-        <DataTable columns={columns} data={data} />
+      <main className="flex flex-col gap-10">
+        <div>
+          <Card>
+            <CardHeader>
+              <CardTitle>Inventory</CardTitle>
+              <CardDescription>Manage your inventory</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <DataTable columns={columns} data={data} />
+            </CardContent>
+          </Card>
+        </div>
       </main>
     </div>
   );

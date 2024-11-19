@@ -8,6 +8,7 @@ import {
   boolean,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 export const cards = pgTable("cards", {
   id: serial("id").primaryKey(),
@@ -22,6 +23,11 @@ export const cards = pgTable("cards", {
   description: varchar("description", { length: 255 }),
   imageUrl: varchar("image_url", { length: 255 }),
 });
+
+// Schema for inserting a user - can be used to validate API requests
+export const insertCardSchema = createInsertSchema(cards);
+// Schema for selecting a user - can be used to validate API responses
+export const selectCardSchema = createSelectSchema(cards);
 
 export const cardsRelations = relations(cards, ({ many }) => ({
   inventory: many(inventory),
@@ -42,6 +48,11 @@ export const inventory = pgTable("inventory", {
   addedAt: timestamp("added_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
+
+// Schema for inserting a user - can be used to validate API requests
+export const insertInventorySchema = createInsertSchema(inventory);
+// Schema for selecting a user - can be used to validate API responses
+export const selectInventorySchema = createSelectSchema(inventory);
 
 export const inventoryRelations = relations(inventory, ({ one }) => ({
   card: one(cards, {
