@@ -38,7 +38,6 @@ export const inventory = pgTable("inventory", {
   cardId: integer("card_id")
     .notNull()
     .references(() => cards.id),
-  quantity: integer("quantity").notNull(),
   price: decimal("price", {
     precision: 10,
     scale: 2,

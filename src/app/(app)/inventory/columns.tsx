@@ -20,10 +20,6 @@ export const columns: ColumnDef<typeof inventory.$inferSelect>[] = [
     header: "price",
   },
   {
-    accessorKey: "quantity",
-    header: "Quantity",
-  },
-  {
     accessorKey: "quality",
     header: "Quality",
   },
