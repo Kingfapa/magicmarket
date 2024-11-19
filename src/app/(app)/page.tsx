@@ -9,11 +9,9 @@ export default async function Home() {
         <h1 className="text-4xl font-bold text-center sm:text-left">
           Welcome to Magicmarket! <ModeSwitcher />
         </h1>
-        <div>
-          <Button className="btn">
-            <Link href="/inventory">Inventory</Link>
-          </Button>
-        </div>
+        <Link href="/inventory">
+          <Button className="btn">Inventory</Button>
+        </Link>
       </main>
     </div>
   );
