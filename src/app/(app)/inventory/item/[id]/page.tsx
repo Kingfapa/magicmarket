@@ -1,38 +1,95 @@
 import {
   Card,
+  CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
 } from "@/components/ui/card";
-import { db } from "@/db";
-import { cards } from "@/db/schema";
-import { eq } from "drizzle-orm";
-import Image from "next/image";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { DataTable } from "../../data-table";
+import { columns } from "../../columns";
+import { createClient } from "@/supabase/server";
 
 export default async function ItemPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const id = (await params).id;
-  const card = await db.query.cards.findFirst({
-    where: eq(cards.id, parseInt(id)),
-  });
-  if (!card) {
-    return <div>Card not found</div>;
-  }
+  const supabase = await createClient();
+  const { data, error } = await supabase.from("inventory").select();
+
+  console.log(data, error);
+
   return (
-    <div className="container py-10 grid gap-4 grid-cols-3 ">
-      <div className="relative w-full fill-current">
-        <Image
-          className="rounded-sm"
-          object-fit="cover"
-          alt="Group Image"
-          fill={true}
-          src="https://cards.scryfall.io/normal/front/1/9/19586946-a6a6-4154-a544-15a052483f96.jpg?1708742099"
-        />
+    <div className="container mx-auto py-10 border min-h-screen gap-10 flex flex-col">
+      <Card className="flex flex-col">
+        <CardHeader>
+          <CardTitle>Black Lotus</CardTitle>
+        </CardHeader>
+        <CardContent>asdasds</CardContent>
+      </Card>
+      <div className="flex gap-4">
+        <div>
+          <Card>
+            <CardHeader>
+              <CardTitle>Filter</CardTitle>
+              <CardDescription>Filter your inventory</CardDescription>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-6">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Foil
+                </label>
+              </div>
+              <Select>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Condition" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Condition</SelectLabel>
+                    <SelectItem value="NM">Near Mint</SelectItem>
+                    <SelectItem value="EX">Excellent</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+              <Select>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Language" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Language</SelectLabel>
+                    <SelectItem value="english">English</SelectItem>
+                    <SelectItem value="swedish">Swedish</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </CardContent>
+          </Card>
+        </div>
+
+        <Card className="flex-1">
+          <CardHeader>
+            <CardTitle>Black Lotus</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <DataTable columns={columns} data={data} />
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

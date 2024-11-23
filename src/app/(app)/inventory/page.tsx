@@ -1,5 +1,3 @@
-import { db } from "@/db";
-
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
 import {
@@ -9,16 +7,18 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card";
+import { createClient } from "@/supabase/server";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const data = await db.query.inventory.findMany({
-    with: {
-      card: true,
-    },
-  });
-  console.log(data);
+  const supabase = await createClient();
+
+  // const { data, error } = await supabase.auth.getUser();
+
+  const { data, error } = await supabase.from("inventory").select();
+
+  console.log(data, error);
 
   return (
     <div className="container mx-auto py-10 border min-h-screen">
@@ -30,7 +30,25 @@ export default async function Home() {
               <CardDescription>Manage your inventory</CardDescription>
             </CardHeader>
             <CardContent>
-              <DataTable columns={columns} data={data} />
+              {/* <DataTable columns={columns} data={data} /> */}
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>Inventory</CardTitle>
+              <CardDescription>Manage your inventory</CardDescription>
+            </CardHeader>
+            <CardContent>
+              {/* <DataTable columns={columns} data={data} /> */}
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>Inventory</CardTitle>
+              <CardDescription>Manage your inventory</CardDescription>
+            </CardHeader>
+            <CardContent>
+              {/* <DataTable columns={columns} data={data} /> */}
             </CardContent>
           </Card>
         </div>

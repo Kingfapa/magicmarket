@@ -1,30 +1,36 @@
 "use server";
 
-import { db } from "@/db";
-import { cards, insertInventorySchema, inventory } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { encodedRedirect } from "@/lib/encodedRedirect";
+import { createClient } from "@/supabase/server";
+import { redirect } from "next/navigation";
+
+export const signInAction = async () => {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "github",
+    options: {
+      redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/auth/callback`,
+    },
+  });
+
+  console.log(data);
+
+  if (error) {
+    return encodedRedirect("error", "/sign-in", error.message);
+  }
+
+  return redirect(data.url);
+};
 
 export const createInventory = async (formData: FormData): Promise<void> => {
-  // Create a new inventory item.
+  const supabase = await createClient();
   try {
-    const { data, success, error } = insertInventorySchema.safeParse({
-      cardId: parseInt(formData.get("cardId") as string),
-      price: formData.get("price"),
-      quantity: parseInt(formData.get("quantity") as string),
-      quality: formData.get("quality"),
-    });
-    if (!success) {
-      throw new Error(`Invalid data: ${error.message}`);
-    }
-    const card = await db.query.cards.findFirst({
-      where: eq(cards.id, data.cardId),
-    });
-    // check if the card exists
-    if (!card) {
-      throw new Error("Card not found");
-    }
     // insert the inventory item
-    await db.insert(inventory).values(data);
+    await supabase.from("inventory").insert({
+      condition: formData.get("condition") as string,
+      language: formData.get("language") as string,
+    });
   } catch (error) {
     console.error(error);
     throw new Error("An error occurred while creating the inventory item.");

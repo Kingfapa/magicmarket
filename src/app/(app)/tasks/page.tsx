@@ -31,20 +31,20 @@ async function getTasks() {
 export default async function TaskPage() {
   const tasks = await getTasks();
 
-  const data = await db.query.inventory.findMany({
-    where: isNotNull(inventory.cardId),
-  });
+  // const data = await db.query.inventory.findMany({
+  //   where: isNotNull(inventory.cardId),
+  // });
 
-  console.log(data);
+  // console.log(data);
 
-  const cardss = await db.query.cards.findMany({
-    where: inArray(
-      cards.id,
-      data.map((d) => d.cardId)
-    ),
-  });
+  // const cardss = await db.query.cards.findMany({
+  //   where: inArray(
+  //     cards.id,
+  //     data.map((d) => d.cardId)
+  //   ),
+  // });
 
-  console.log(cardss);
+  // console.log(cardss);
 
   return (
     <div className="container py-6">
