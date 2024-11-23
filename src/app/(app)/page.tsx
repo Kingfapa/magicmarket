@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ModeSwitcher } from "../mode-switcher";
+import { signInAction } from "../actions";
 
 export default async function Home() {
   return (
@@ -12,6 +13,11 @@ export default async function Home() {
         <Link href="/inventory">
           <Button className="btn">Inventory</Button>
         </Link>
+        <form>
+          <Button className="btn" formAction={signInAction}>
+            Sign In
+          </Button>
+        </form>
       </main>
     </div>
   );
