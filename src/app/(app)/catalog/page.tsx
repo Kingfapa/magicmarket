@@ -1,27 +1,96 @@
-import { ExampleChart } from "./ExampleChart";
-import { ExampleChartY } from "./ExampleChartY";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { DataTable } from "./components/data-table";
+import { columns } from "./components/columns";
+import { createClient } from "@/supabase/server";
 
-export default async function Home() {
+export default async function CatalogPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const supabase = await createClient();
+  const { data, error } = await supabase.from("inventory").select();
+
+  console.log(data, error);
+
   return (
-    <div className="mx-auto w-full border-border/40 dark:border-border min-[1800px]:max-w-[1536px] min-[1800px]:border-x">
-      <main className="flex-1">
-        <div className="relative">
-          <div className="container py-6">
-            <section className="scroll-mt-20">
-              <div className="grid gap-4">
-                <div className="gap-6 md:flex md:flex-row-reverse md:items-start">
-                  <div className="grid flex-1 gap-12">
-                    <div className="grid flex-1 scroll-mt-20 items-start gap-10 md:grid-cols-2 md:gap-6 lg:grid-cols-3 xl:gap-10">
-                      <ExampleChart />
-                      <ExampleChartY />
-                    </div>
-                  </div>
-                </div>
+    <div className="container mx-auto py-10 border min-h-screen gap-10 flex flex-col">
+      <Card className="flex flex-col">
+        <CardHeader>
+          <CardTitle>Black Lotus</CardTitle>
+        </CardHeader>
+        <CardContent>asdasds</CardContent>
+      </Card>
+      <div className="flex gap-4">
+        <div>
+          <Card>
+            <CardHeader>
+              <CardTitle>Filter</CardTitle>
+              <CardDescription>Filter your inventory</CardDescription>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-6">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Foil
+                </label>
               </div>
-            </section>
-          </div>
+              <Select>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Condition" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Condition</SelectLabel>
+                    <SelectItem value="NM">Near Mint</SelectItem>
+                    <SelectItem value="EX">Excellent</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+              <Select>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Language" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Language</SelectLabel>
+                    <SelectItem value="english">English</SelectItem>
+                    <SelectItem value="swedish">Swedish</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </CardContent>
+          </Card>
         </div>
-      </main>
+
+        <Card className="flex-1">
+          <CardHeader>
+            <CardTitle>Black Lotus</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {data && <DataTable columns={columns} data={data} />}
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
