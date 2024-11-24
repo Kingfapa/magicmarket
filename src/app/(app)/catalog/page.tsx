@@ -18,14 +18,26 @@ import {
 import { DataTable } from "./components/data-table";
 import { columns } from "./components/columns";
 import { createClient } from "@/supabase/server";
+import { Filter } from "./components/filter";
+import { Database } from "../../../../types/supabase";
 
 export default async function CatalogPage({
-  params,
+  searchParams,
 }: {
-  params: Promise<{ id: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
+  const params = await searchParams;
+  console.log(params);
   const supabase = await createClient();
-  const { data, error } = await supabase.from("inventory").select();
+  const query = supabase.from("inventory").select();
+
+  if (params.foil) {
+  }
+  if (params.condition) {
+    query.eq("condition", params.condition);
+  }
+
+  const { data, error } = await query;
 
   console.log(data, error);
 
@@ -39,49 +51,8 @@ export default async function CatalogPage({
       </Card>
       <div className="flex gap-4">
         <div>
-          <Card>
-            <CardHeader>
-              <CardTitle>Filter</CardTitle>
-              <CardDescription>Filter your inventory</CardDescription>
-            </CardHeader>
-            <CardContent className="flex flex-col gap-6">
-              <div className="flex items-center space-x-2">
-                <Checkbox id="terms" />
-                <label
-                  htmlFor="terms"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
-                  Foil
-                </label>
-              </div>
-              <Select>
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Condition" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Condition</SelectLabel>
-                    <SelectItem value="NM">Near Mint</SelectItem>
-                    <SelectItem value="EX">Excellent</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-              <Select>
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Language" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Language</SelectLabel>
-                    <SelectItem value="english">English</SelectItem>
-                    <SelectItem value="swedish">Swedish</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </CardContent>
-          </Card>
+          <Filter />
         </div>
-
         <Card className="flex-1">
           <CardHeader>
             <CardTitle>Black Lotus</CardTitle>

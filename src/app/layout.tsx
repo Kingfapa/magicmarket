@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Suspense } from "react";
 import { cn } from "@/lib/utils";
 import { fontSans, fontMono } from "@/lib/fonts";
+import { NuqsAdapter } from "nuqs/adapters/next";
 
 export const metadata: Metadata = {
   title: "Magicmarket",
@@ -32,7 +33,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            {children}
+            <NuqsAdapter>{children}</NuqsAdapter>
           </ThemeProvider>
         </Suspense>
       </body>
