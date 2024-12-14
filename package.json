@@ -6,7 +6,8 @@
     "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "types": "npx supabase gen types typescript --project-id 'fxrahpzhxhnungvcmycb' --schema public > types/supabase.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
