@@ -19,6 +19,10 @@ import {
 } from "@/components/ui/select";
 import { CheckedState } from "@radix-ui/react-checkbox";
 import { useQueryState } from "nuqs";
+import { DataTableFacetedFilter } from "./data-table-faceted-filter";
+import { Table } from "@tanstack/react-table";
+import { Database } from "../../../../../types/supabase";
+import { HelpCircle } from "lucide-react";
 
 const FilterSelect = ({
   param,
@@ -35,7 +39,7 @@ const FilterSelect = ({
   });
   return (
     <Select value={value} onValueChange={setValue}>
-      <SelectTrigger className="w-[180px]">
+      <SelectTrigger>
         <SelectValue placeholder={label} />
       </SelectTrigger>
       <SelectContent>
@@ -70,15 +74,7 @@ const FilterCheckbox = ({ param, label }: { param: string; label: string }) => {
   );
 };
 
-export function Filter() {
-  const [foil, setFoil] = useQueryState<CheckedState>("foil", {
-    defaultValue: false,
-    parse: (value) => value === "true",
-  });
-  const [condition, setCondition] = useQueryState("condition", {
-    defaultValue: "",
-    shallow: false,
-  });
+export function Filter<TData>({ table }: { table: Table<TData> }) {
   return (
     <Card>
       <CardHeader>
@@ -86,39 +82,31 @@ export function Filter() {
         <CardDescription>Filter your inventory</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-6">
+        <FilterSelect
+          param="set"
+          label="Set"
+          options={[
+            { label: "Alpha", value: "alpha" },
+            { label: "Beta", value: "beta" },
+          ]}
+        />
         <FilterCheckbox param="foil" label="Foil" />
         <FilterSelect
-          param="Language"
+          param="language"
           label="Language"
           options={[
             { label: "English", value: "english" },
             { label: "Swedish", value: "swedish" },
           ]}
         />
-        <Select value={condition} onValueChange={setCondition}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Condition" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Condition</SelectLabel>
-              <SelectItem value="NM">Near Mint</SelectItem>
-              <SelectItem value="EX">Excellent</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-        <Select>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Language" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Language</SelectLabel>
-              <SelectItem value="english">English</SelectItem>
-              <SelectItem value="swedish">Swedish</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
+        <FilterSelect
+          param="condition"
+          label="Condition"
+          options={[
+            { label: "Near Mint", value: "NM" },
+            { label: "Excellent", value: "EX" },
+          ]}
+        />
       </CardContent>
     </Card>
   );

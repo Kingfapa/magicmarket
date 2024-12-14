@@ -29,20 +29,24 @@ export default async function CatalogPage({
   const params = await searchParams;
   console.log(params);
   const supabase = await createClient();
-  const query = supabase.from("inventory").select();
+  // const query = supabase.from("inventory").select(`
+  //   *,
+  //   condition (*),
+  //   language (*),
+  //   item (
+  //     name,
+  //     type (*),
+  //     set (*)
+  //   )`);
 
-  if (params.foil) {
-  }
-  if (params.condition) {
-    query.eq("condition", params.condition);
-  }
+  const query = supabase.from("cards").select();
 
   const { data, error } = await query;
 
   console.log(data, error);
 
   return (
-    <div className="container mx-auto py-10 border min-h-screen gap-10 flex flex-col">
+    <div className="container flex flex-col min-h-screen gap-10 py-10 mx-auto border">
       <Card className="flex flex-col">
         <CardHeader>
           <CardTitle>Black Lotus</CardTitle>
@@ -50,9 +54,6 @@ export default async function CatalogPage({
         <CardContent>asdasds</CardContent>
       </Card>
       <div className="flex gap-4">
-        <div>
-          <Filter />
-        </div>
         <Card className="flex-1">
           <CardHeader>
             <CardTitle>Black Lotus</CardTitle>

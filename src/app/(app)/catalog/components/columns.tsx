@@ -11,33 +11,43 @@ export const columns: ColumnDef<
   Database["public"]["Tables"]["inventory"]["Row"]
 >[] = [
   {
-    accessorKey: "id",
+    accessorKey: "item.name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="ID" />
+      <DataTableColumnHeader column={column} title="Item" />
     ),
   },
   {
-    accessorKey: "created_at",
+    accessorKey: "foil",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Created At" />
+      <DataTableColumnHeader column={column} title="Foil" />
+    ),
+  },
+  // {
+  //   accessorKey: "item.type.name",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="Type" />
+  //   ),
+  // },
+  {
+    accessorKey: "item.set.name",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Set" />
     ),
   },
   {
-    accessorKey: "condition",
+    accessorKey: "condition.name",
     header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title="Condition"
-        options={[
-          { id: "NM", value: "NM" },
-          { id: "EX", value: "EX" },
-        ]}
-      />
+      <DataTableColumnHeader column={column} title="Condition" />
     ),
-    filterFn: "arrIncludesSome",
   },
   {
-    accessorKey: "language",
+    accessorKey: "price",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Price" />
+    ),
+  },
+  {
+    accessorKey: "language.name",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Language" />
     ),
