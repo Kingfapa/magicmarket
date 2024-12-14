@@ -8,9 +8,6 @@ import { columns } from "./components/columns";
 import { DataTable } from "./components/data-table";
 import { UserNav } from "./components/user-nav";
 import { taskSchema } from "./data/schema";
-import { db } from "@/db";
-import { cards, inventory } from "@/db/schema";
-import { inArray, isNotNull, sql } from "drizzle-orm";
 
 export const metadata: Metadata = {
   title: "Tasks",

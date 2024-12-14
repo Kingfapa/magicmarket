@@ -59,7 +59,7 @@ export default async function CatalogPage({
             <CardTitle>Black Lotus</CardTitle>
           </CardHeader>
           <CardContent>
-            {data && <DataTable columns={columns} data={data} />}
+            {/* {data && <DataTable columns={columns} data={data} />} */}
           </CardContent>
         </Card>
       </div>

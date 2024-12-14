@@ -87,7 +87,7 @@ export default async function ItemPage({
             <CardTitle>Black Lotus</CardTitle>
           </CardHeader>
           <CardContent>
-            <DataTable columns={columns} data={data} />
+            {/* <DataTable columns={columns} data={data} /> */}
           </CardContent>
         </Card>
       </div>
